@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Suscripción Lit Component</title>
+    <style>
+      body {
+        padding: 24px;
+        background-color: #f8fafc;
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+      lit-suscripcion {
+        flex: 1 1 280px;
+        display: flex;
+      }
+      @media (max-width: 992px) {
+        .container {
+          flex-direction: column;
+          align-items: center;
+        }
+        lit-suscripcion {
+          width: 90%;
+          max-width: 400px;
+          flex: 1 1 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <lit-suscripcion plan-id="basic"></lit-suscripcion>
+      <lit-suscripcion plan-id="freelance"></lit-suscripcion>
+      <lit-suscripcion plan-id="business"></lit-suscripcion>
+    </div>
+    <script type="module" src="/main.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const basic = document.querySelector(
+          'lit-suscripcion[plan-id="basic"]',
+        );
+        basic.title = 'Basic';
+        basic.subtitle = '500 monthly visits';
+        basic.price = 0;
+        basic.originalPrice = '$0 incl. 21% Vat';
+        basic.description =
+          'Basic tarif is build for those users who want to try and grow with our app without paying.';
+        basic.featuresTitle = 'Features included:';
+        basic.features = [
+          { text: 'Daily visits' },
+          { text: 'Monthly visits reporting' },
+          { text: 'Basic Dashboard', isNew: true },
+          { text: 'Email Support' },
+        ];
+
+        const freelance = document.querySelector(
+          'lit-suscripcion[plan-id="freelance"]',
+        );
+        freelance.title = 'Freelance';
+        freelance.subtitle = '10 000 monthly visits';
+        freelance.price = 16;
+        freelance.originalPrice = '$18 incl. 21% Vat';
+        freelance.highlight = true;
+        freelance.buttonText = 'Choose Plan';
+        freelance.description =
+          'Freelance tarif matching the analytics tool for clients. Get fast insights and make real time decisions.';
+        freelance.featuresTitle = 'Basic plan Plus:';
+        freelance.features = [
+          { text: 'Twitter integration' },
+          { text: 'Acquisitions Dashboard', isNew: true },
+          { text: 'Client Billing', isNew: true },
+          { text: 'Support' },
+        ];
+
+        const business = document.querySelector(
+          'lit-suscripcion[plan-id="business"]',
+        );
+        business.title = 'Business';
+        business.subtitle = '100 000 monthly visits';
+        business.price = 49;
+        business.originalPrice = '$56 incl. 21% Vat';
+        business.description =
+          'Business tarif is taolored exactly for fast growing companies and startups who needs deep analytics insights.';
+        business.featuresTitle = 'Freelance plan Plus:';
+        business.features = [
+          { text: 'Competitor Dashboard' },
+          { text: 'Full API control', isNew: true },
+          { text: 'User permissions' },
+          { text: 'Advanced Support' },
+        ];
+      });
+
+      document.body.addEventListener('subscribe', (e) => {
+        alert(`Event from Lit! Plan: ${e.detail.title} ($${e.detail.price})`);
+      });
+    </script>
+  </body>
+</html>

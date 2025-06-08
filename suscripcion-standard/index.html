@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Suscripción Web Component</title>
+    <style>
+      body {
+        padding: 24px;
+        background-color: #f8fafc;
+      }
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+      my-suscripcion {
+        flex: 1 1 280px;
+        display: flex;
+      }
+      @media (max-width: 992px) {
+        .container {
+          flex-direction: column;
+          align-items: center;
+        }
+        my-suscripcion {
+          width: 90%;
+          max-width: 400px;
+          flex: 1 1 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <my-suscripcion plan-id="basic">
+        <span slot="title">Basic</span>
+        <span slot="subtitle">500 monthly visits</span>
+        <span slot="price">$0</span>
+        <span slot="original-price">$0 incl. 21% Vat</span>
+        <span slot="description"
+          >Basic tarif is build for those users who want to try and grow with
+          our app without paying.</span
+        >
+        <span slot="features-title">Features included:</span>
+        <li>Daily visits</li>
+        <li>Monthly visits reporting</li>
+        <li>Basic Dashboard</li>
+        <li>Email Support</li>
+      </my-suscripcion>
+      <my-suscripcion plan-id="freelance" highlight>
+        <span slot="title">Freelance</span>
+        <span slot="subtitle">10 000 monthly visits</span>
+        <span slot="price">$16</span>
+        <span slot="original-price">$18 incl. 21% Vat</span>
+        <span slot="description"
+          >Freelance tarif matching the analytics tool for clients. Get fast
+          insights and make real time decisions.</span
+        >
+        <span slot="features-title">Basic plan Plus:</span>
+        <li>Twitter integration</li>
+        <li>Acquisitions Dashboard</li>
+        <li>Client Billing</li>
+        <li>Support</li>
+      </my-suscripcion>
+      <my-suscripcion plan-id="business">
+        <span slot="title">Business</span>
+        <span slot="subtitle">100 000 monthly visits</span>
+        <span slot="price">$49</span>
+        <span slot="original-price">$56 incl. 21% Vat</span>
+        <span slot="description"
+          >Business tarif is taolored exactly for fast growing companies and
+          startups who needs deep analytics insights.</span
+        >
+        <span slot="features-title">Freelance plan Plus:</span>
+        <li>Competitor Dashboard</li>
+        <li>Full API control</li>
+        <li>User permissions</li>
+        <li>Advanced Support</li>
+      </my-suscripcion>
+    </div>
+    <script type="module" src="/main.js"></script>
+    <script>
+      document.body.addEventListener('subscribe', (e) => {
+        alert(`Event from Standard WC! Plan ID: ${e.detail.planId}`);
+      });
+    </script>
+  </body>
+</html>
