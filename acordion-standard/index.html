@@ -1,22 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Accordion Web Component</title>
-</head>
-<body>
-  <my-accordion>
-    <my-accordion-item title="The first item">
-      Descripción Item 1
-    </my-accordion-item>
-    <my-accordion-item title="The second item">
-      Descripción Item 2
-    </my-accordion-item>
-    <my-accordion-item title="The third item">
-      Descripción Item 3
-    </my-accordion-item>
-  </my-accordion>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Accordion Web Component</title>
+  </head>
+  <body>
+    <my-accordion>
+      <my-accordion-item
+        title="What is your refund policy?"
+        meta="FAQ"
+        meta-icon="info"
+      >
+        <strong>We offer a 30-day money-back guarantee.</strong> If you're not
+        satisfied, contact us within 30 days and we'll refund you, no questions
+        asked.
+      </my-accordion-item>
+      <my-accordion-item
+        title="Terms of Service"
+        meta="Legal"
+        meta-icon="check"
+      >
+        <h4>Acceptance of Terms</h4>
+        <p>
+          By using our service, you agree to our
+          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </my-accordion-item>
+      <my-accordion-item title="How do I contact support?" meta="Support">
+        <p>
+          You can reach us 24/7 at
+          <a href="mailto:support@uc.com">support@uc.com</a>
+        </p>
+      </my-accordion-item>
+    </my-accordion>
 
-  <script type="module" src="/main.js"></script>
-</body>
+    <script type="module" src="/main.js"></script>
+  </body>
 </html>

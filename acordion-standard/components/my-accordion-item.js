@@ -1,96 +1,225 @@
-const template = document.createElement('template'); // HTML Templates
+const template = document.createElement("template");
 template.innerHTML = `
   <style>
     :host {
       display: block;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      --header-bg: #f5f7fa;
+      font-family: 'Inter', system-ui, sans-serif;
+      --header-bg: rgba(241,245,249,0.85);
+      --header-blur: blur(8px);
+      --header-border: 1.5px solid #3b82f6;
       --header-color: #1e293b;
       --content-bg: #ffffff;
-      --border-color: #e2e8f0;
-      --hover-bg: #e2e8f0;
+      --border-color: #e0e7ef;
+      --hover-bg: rgba(59,130,246,0.07);
       --icon-color: #3b82f6;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      margin-bottom: 8px;
+      --shadow: 0 8px 32px 0 rgba(30,41,59,0.10);
+      border: 1.5px solid var(--border-color);
+      border-radius: 16px;
+      margin-bottom: 20px;
       overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow);
+      background: var(--content-bg);
+      transition: box-shadow 0.2s, border 0.2s;
     }
-
     .header {
       background: var(--header-bg);
       color: var(--header-color);
-      padding: 12px 16px;
+      padding: 22px 32px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      border-radius: 12px 12px 0 0;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      min-height: 64px;
+      backdrop-filter: var(--header-blur);
+      border-bottom: var(--header-border);
+      box-shadow: 0 2px 8px 0 rgba(59,130,246,0.04);
+      position: relative;
+    }
+    .header-main {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+    .meta-badge {
+      background: #e0e7ef;
+      color: #2563eb;
+      font-size: 0.92em;
       font-weight: 600;
-      transition: background 0.2s ease;
+      border-radius: 8px;
+      padding: 4px 14px 4px 10px;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      vertical-align: middle;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 1px 4px 0 rgba(59,130,246,0.07);
+      white-space: nowrap;
     }
-
-    .header:hover {
-      background: var(--hover-bg);
+    .meta-badge svg {
+      width: 1.1em;
+      height: 1.1em;
+      margin-right: 2px;
+      opacity: 0.8;
     }
-
-    .icon {
-      transition: transform 0.2s ease;
+    .header:hover .meta-badge {
+      background: #3b82f6;
+      color: #fff;
+    }
+    .chevron {
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), color 0.2s;
       color: var(--icon-color);
+      width: 1.5em;
+      height: 1.5em;
+      margin-left: 14px;
+      flex-shrink: 0;
+      display: inline-block;
     }
-
-    :host([open]) .icon {
-      transform: rotate(90deg);
+    :host([open]) .chevron {
+      transform: rotate(90deg) scale(1.15);
+      color: #2563eb;
     }
-
     .content {
       background: var(--content-bg);
-      padding: 16px;
-      display: none;
-      font-size: 0.95rem;
-      line-height: 1.5;
+      padding: 28px 32px 24px 32px;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: #475569;
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+      border-radius: 0 0 16px 16px;
+      box-sizing: border-box;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(16px);
+      transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s, transform 0.35s;
     }
-
     :host([open]) .content {
-      display: block;
+      opacity: 1;
+      max-height: 800px;
+      transform: translateY(0);
+      transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.4s, transform 0.4s;
+    }
+    @media (max-width: 600px) {
+      .header, .content {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+      .header {
+        font-size: 1.01rem;
+        min-height: 44px;
+      }
+      .content {
+        font-size: 0.98rem;
+      }
+      .header-main {
+        gap: 8px;
+      }
     }
   </style>
   <div class="header">
-    <span class="title"></span>
-    <span class="icon">▶</span>
+    <span class="header-main">
+      <span class="title"></span>
+      <span class="meta-badge"></span>
+    </span>
+    <span class="chevron">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 8 10 12 14 8"/></svg>
+    </span>
   </div>
   <div class="content">
     <slot></slot>
   </div>
 `;
 
-// Custom Elements
 class MyAccordionItem extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' }).appendChild(template.content.cloneNode(true)); // Shadow DOM
-    this._header = this.shadowRoot.querySelector('.header');
-    this._title = this.shadowRoot.querySelector('.title');
+    this.attachShadow({ mode: "open" }).appendChild(
+      template.content.cloneNode(true)
+    ); // Shadow DOM
+    this._header = this.shadowRoot.querySelector(".header");
+    this._title = this.shadowRoot.querySelector(".title");
+    this._content = this.shadowRoot.querySelector(".content");
+    this._meta = this.shadowRoot.querySelector(".meta-badge");
+  }
+
+  static get observedAttributes() {
+    return ["title", "meta", "meta-icon"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "title") {
+      this._title.textContent = newValue || "Untitled";
+    }
+    if (name === "meta") {
+      this._renderMeta();
+    }
+    if (name === "meta-icon") {
+      this._renderMeta();
+    }
   }
 
   connectedCallback() {
-    this._title.textContent = this.getAttribute('title') || 'Untitled';
-    this._header.addEventListener('click', () => {
-      this.dispatchEvent(new CustomEvent('toggle', {
-        bubbles: true,
-        composed: true,
-        detail: { item: this }
-      }));
+    this._title.textContent = this.getAttribute("title") || "Untitled";
+    this._renderMeta();
+    this._header.addEventListener("click", () => {
+      this.dispatchEvent(
+        new CustomEvent("toggle", {
+          bubbles: true,
+          composed: true,
+          detail: { item: this },
+        })
+      );
     });
+    // For transition: set max-height dynamically
+    if (this.hasAttribute("open")) {
+      this._content.style.maxHeight = this._content.scrollHeight + "px";
+      this._content.style.opacity = "1";
+      this._content.style.transform = "translateY(0)";
+    }
+  }
+
+  _renderMeta() {
+    const metaValue = this.getAttribute("meta");
+    const metaIcon = this.getAttribute("meta-icon");
+    this._meta.innerHTML = "";
+    if (metaIcon === "info") {
+      this._meta.innerHTML += `<svg viewBox='0 0 20 20' fill='none' stroke='currentColor' stroke-width='2' width='1em' height='1em'><circle cx='10' cy='10' r='9'/><line x1='10' y1='7' x2='10' y2='10.5'/><circle cx='10' cy='13.2' r='1.1' fill='currentColor'/></svg>`;
+    } else if (metaIcon === "check") {
+      this._meta.innerHTML += `<svg viewBox='0 0 20 20' fill='none' stroke='currentColor' stroke-width='2' width='1em' height='1em'><polyline points='5 11 9 15 15 7'/></svg>`;
+    }
+    if (metaValue) {
+      this._meta.innerHTML += `<span>${metaValue}</span>`;
+      this._meta.style.display = "flex";
+    } else {
+      this._meta.style.display = "none";
+    }
   }
 
   open() {
-    this.setAttribute('open', '');
+    this.setAttribute("open", "");
+    // Animate open
+    requestAnimationFrame(() => {
+      this._content.style.maxHeight = this._content.scrollHeight + "px";
+      this._content.style.opacity = "1";
+      this._content.style.transform = "translateY(0)";
+    });
   }
 
   close() {
-    this.removeAttribute('open');
+    this.removeAttribute("open");
+    // Animate close
+    this._content.style.maxHeight = "0px";
+    this._content.style.opacity = "0";
+    this._content.style.transform = "translateY(16px)";
   }
 }
 
-customElements.define('my-accordion-item', MyAccordionItem);
+customElements.define("my-accordion-item", MyAccordionItem);
