@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Lit Accordion</title>
-</head>
-<body>
-  <lit-accordion>
-    <lit-accordion-item title="The first item">
-      Description Item 1
-    </lit-accordion-item>
-    <lit-accordion-item title="The second item">
-      Description Item 2
-    </lit-accordion-item>
-    <lit-accordion-item title="The third item">
-      Description Item 3
-    </lit-accordion-item>
-  </lit-accordion>
-  <script type="module" src="/main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lit Accordion</title>
+  </head>
+  <body>
+    <lit-accordion>
+      <lit-accordion-item title="What is your refund policy?">
+        <span slot="meta">&#9432; FAQ</span>
+        <strong>We offer a 30-day money-back guarantee.</strong> If you're not
+        satisfied, contact us within 30 days and we'll refund you, no questions
+        asked.
+      </lit-accordion-item>
+      <lit-accordion-item title="Terms of Service">
+        <span slot="meta">&#10003; Legal</span>
+        <h4>Acceptance of Terms</h4>
+        <p>
+          By using our service, you agree to our
+          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </lit-accordion-item>
+      <lit-accordion-item title="How do I contact support?">
+        <span slot="meta">Support</span>
+        <p>
+          You can reach us 24/7 at
+          <a href="mailto:support@uc.com">support@uc.com</a> or via our live
+          chat.
+        </p>
+      </lit-accordion-item>
+    </lit-accordion>
+    <script type="module" src="/main.js"></script>
+  </body>
 </html>
